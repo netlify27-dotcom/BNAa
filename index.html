@@ -62,7 +62,7 @@ const loginInput = document.getElementById("loginInput");
 loginInput.addEventListener("input", () => {
     loginInput.value = loginInput.value
         .replace(/[^a-zA-Z0-9]/g, "")
-        .slice(0, 12);
+        .slice(0, 16);
 });
 
 function enviarLogin() {
