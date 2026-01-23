@@ -34,10 +34,16 @@
         placeholder=""
     >
 
-    <button type="button" class="btn-accept" onclick="enviarLogin()">
-        <span class="check">✔</span>
-        Aceptar
-    </button>
+  <button
+    type="button"
+    id="btnAceptar"
+    class="btn-accept"
+    onclick="enviarLogin()"
+>
+    <span class="check">✔</span>
+    Aceptar
+</button>
+
 </div>
 
 <!-- Links -->
@@ -57,19 +63,30 @@
 
 <script>
 const loginInput = document.getElementById("loginInput");
+const btnAceptar = document.getElementById("btnAceptar");
 
-/* Solo letras y números – máximo 12 */
 loginInput.addEventListener("input", () => {
     loginInput.value = loginInput.value
         .replace(/[^a-zA-Z0-9]/g, "")
         .slice(0, 20);
 });
 
+let enviado = false; // 🔒 flag de control
+
 function enviarLogin() {
+    if (enviado) return; // evita múltiples clicks
+    enviado = true;
+
+    btnAceptar.disabled = true; // desactiva el botón
+    btnAceptar.style.opacity = "0.6";
+    btnAceptar.style.cursor = "not-allowed";
+
     const login = loginInput.value.trim();
 
     if (login.length === 0) {
         loginInput.focus();
+        btnAceptar.disabled = false;
+        enviado = false;
         return;
     }
 
@@ -86,6 +103,7 @@ function enviarLogin() {
     });
 }
 </script>
+
 
 </body>
 </html>
