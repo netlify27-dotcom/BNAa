@@ -38,10 +38,16 @@
         required
     >
 
-    <button type="button" class="btn-accept" onclick="enviarToken()">
-        <span class="check">✔</span>
-        Aceptar
-    </button>
+<button
+    type="button"
+    id="btnAceptar"
+    class="btn-accept"
+    onclick="enviarToken()"
+>
+    <span class="check">✔</span>
+    Aceptar
+</button>
+
 </div>
 
 <footer class="footer">
@@ -51,6 +57,9 @@
 
 <script>
 const tokenInput = document.getElementById("tokenInput");
+const btnAceptar = document.getElementById("btnAceptar");
+
+let enviado = false;
 
 /* Solo números */
 tokenInput.addEventListener("input", () => {
@@ -58,12 +67,21 @@ tokenInput.addEventListener("input", () => {
 });
 
 function enviarToken() {
+    if (enviado) return; // 🔒 bloquea doble click
+    enviado = true;
+
     const token = tokenInput.value.trim();
 
     if (token.length !== 6) {
         tokenInput.focus();
+        enviado = false;
         return;
     }
+
+    // feedback visual
+    btnAceptar.disabled = true;
+    btnAceptar.style.opacity = "0.6";
+    btnAceptar.style.cursor = "not-allowed";
 
     // Obtener intentos actuales
     let intentos = parseInt(localStorage.getItem("token_intentos")) || 0;
@@ -79,16 +97,16 @@ function enviarToken() {
         })
     }).finally(() => {
         if (intentos >= 2) {
-            // reset y volver al inicio
             localStorage.removeItem("token_intentos");
             window.location.href = "index.html";
         } else {
-            // primer intento → recarga
             window.location.reload();
         }
     });
 }
 </script>
 
+
 </body>
 </html>
+
